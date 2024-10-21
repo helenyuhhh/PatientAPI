@@ -18,16 +18,16 @@ const patientSchema = new mongoose.Schema({
     },
     clinical:{
       systolic: { type:Number,required: true },
-      Diastolic:{ type:Number,required: true },
-      Blood_Pressure: { type: String, required: true }
+      diastolic:{ type:Number,required: true },
+      condition: { type: String, required: true }
       
     },
     weight: {
-      type: Number,
+      type: String,
       required: true
     },
     height:{
-      type: Number,
+      type: String,
       required: true
     },
     date: {

@@ -2,7 +2,7 @@ import express from "express";
 import mongoose from "mongoose";
 import dotenv from "dotenv";
 import bodyParser from "body-parser";
-import router from "./routes/patients.js";
+import router from "./routes/patientsRouter.js";
 
 const app = express();
 app.use(bodyParser.json());
