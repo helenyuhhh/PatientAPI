@@ -50,6 +50,9 @@ router.patch('/:id', getPatient, async(req, res)=>{
    if (req.body.picture != null) {
       res.patient.picture = req.body.picture
    }
+   if (req.body.gender != null) {
+      res.patient.gender = req.body.gender
+   }
    try {
       const updatedClinical = await res.patient.save()
       res.json(updatedClinical)
