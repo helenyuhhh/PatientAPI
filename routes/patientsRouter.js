@@ -25,7 +25,8 @@ router.post('/', async(req, res)=>{
       clinical: req.body.clinical,
       weight: req.body.weight,
       height: req.body.height,
-      date: req.body.date
+      date: req.body.date,
+      picture: req.body.picture
    })
    try {
      const newPatient = await patient.save()
@@ -45,6 +46,9 @@ router.patch('/:id', getPatient, async(req, res)=>{
    }
    if (req.body.weight != null) {
       res.patient.weight = req.body.weight
+   }
+   if (req.body.picture != null) {
+      res.patient.picture = req.body.picture
    }
    try {
       const updatedClinical = await res.patient.save()
