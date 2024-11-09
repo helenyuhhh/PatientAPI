@@ -77,27 +77,21 @@ router.delete('/:id', getPatient, async(req, res)=>{
 })
 
 // get patient's test list by passing the id, it's working now
-router.get('/:id/tests', getPatient, (req, res)=>{
-   res.send(res.patient.tests)// returning the patient name with specific id
+router.get('/:id/tests', async(req, res)=>{
+   try{
+      const tests = await Test.find() // get all the patients from the patiens
+      res.json(tests)
+   } catch (error) {
+      res.status(500).json({ message: error.message})
+   }
 })
-router.get('/:id/tests/:testid', getPatient, (req, res)=>{
+router.get('/:id/tests/:testid', getTest, (req, res)=>{
    // returning the patient name with specific id
    // first check if the patient exist
    // then check if the test id exist
-   let testingID 
-   try{
-      testingID = res.patient.tests.id
-      if (testingID != req.params.testid){
-       return res.status(404).json({messsage: 'Cannot find fond'})
-      }
-      else {
-         res.send(res.patient.tests.id)
-      }
-    }catch(error){
-       return res.status(500).json({ message: error.message})
-    }
+   res.send(res.test)
 })
-// post tests works
+// post tests works??? can't see the results!
 router.post('/:id/tests', getPatient,async(req, res)=>{
    // const {name, age, gender, room, clinical, weight, height, date} = req.body
    const test = new Test(
@@ -163,7 +157,20 @@ async function getPatient(req, res, next){
    }
    res.patient = patient1
    next()
-
 }
+async function getTest(req, res, next){
+   let test1
+   try{
+     test1 = await Test.findById(req.params.testid)
+     if (test1 == null){
+      return res.status(404).json({messsage: 'Cannot find patient'})
+     }
+   }catch(error){
+      return res.status(500).json({ message: error.message})
+   }
+   res.test = test1
+   next()
+}
+
 
 export default router;
