@@ -39,14 +39,14 @@ const patientSchema = new mongoose.Schema({
       required: false
     },
     tests:{
-      patient_id: { type: String, required: true },
+      // patient_id: { type: String, required: true },
       date: { type: Date, required: true },
-      nurse_name: { type: Date, required: true },
+      nurse_name: { type: String, required: true },
       // type: Test
       type: { type: String, required: true }, // to store the type: test name
       // category: Blood Pressure, cause there are many other tests, Respiratory Rate, Blood Oxygen,
       // and Heartbeat Rate
-      category: { type: Date, required: true },
+      category: { type: String, required: true },
       // readings
       reading: { // for Blood Pressure Test
                  systolic: { type:Number,required: false },

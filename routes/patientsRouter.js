@@ -26,6 +26,7 @@ router.post('/', async(req, res)=>{
       weight: req.body.weight,
       height: req.body.height,
       date: req.body.date,
+      tests:req.body.tests,
       picture: req.body.picture
    })
    try {
@@ -53,13 +54,15 @@ router.patch('/:id', getPatient, async(req, res)=>{
    if (req.body.gender != null) {
       res.patient.gender = req.body.gender
    }
+   /*if (req.body.tests != null) {
+      res.patient.tests = req.body.tests
+   }*/
    try {
       const updatedClinical = await res.patient.save()
       res.json(updatedClinical)
    }catch(error){
       res.status(400).json({message: error.message})
    }
-
 })
 // deleting one
 router.delete('/:id', getPatient, async(req, res)=>{
@@ -70,6 +73,40 @@ router.delete('/:id', getPatient, async(req, res)=>{
   }catch(error){
    res.status(500).json({message: error.message})
   }
+})
+
+// get patient's test list by passing the id
+router.get('/:id/tests', getPatient, (req, res)=>{
+   res.send(res.patient.tests)// returning the patient name with specific id
+})
+// patch the patient's tests
+router.patch('/:id/tests', getPatient, async(req, res)=>{
+   if (req.body.date != null) {
+      res.patient.tests.date = req.body.date
+   }
+   if (req.body.nurse_name != null) {
+      res.patient.tests.nurse_name = req.body.nurse_name
+   }
+   if (req.body.type != null) {
+      res.patient.tests.type = req.body.type
+   }
+   if (req.body.category != null) {
+      res.patient.tests.category = req.body.category
+   }
+   // for reading
+   if (req.body.category != null) {
+      res.patient.tests.reading = req.body.reading
+   }
+   // for id
+   if (req.body.id != null) {
+      res.patient.tests.id = req.body.id
+   }
+   try {
+      const updatedClinical = await res.patient.save()
+      res.json(updatedClinical)
+   }catch(error){
+      res.status(400).json({message: error.message})
+   }
 })
 
 // a function can be called multi times
