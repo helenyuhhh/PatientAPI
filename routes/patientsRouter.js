@@ -1,5 +1,6 @@
 import express from "express"
 import Patient from "../models/patients.js"
+import Test from "../models/tests.js"
 const router = express.Router();
 // getting all patients
 router.get('/', async(req, res) =>{
@@ -75,12 +76,52 @@ router.delete('/:id', getPatient, async(req, res)=>{
   }
 })
 
-// get patient's test list by passing the id
+// get patient's test list by passing the id, it's working now
 router.get('/:id/tests', getPatient, (req, res)=>{
    res.send(res.patient.tests)// returning the patient name with specific id
 })
-// patch the patient's tests
+router.get('/:id/tests/:testid', getPatient, (req, res)=>{
+   // returning the patient name with specific id
+   // first check if the patient exist
+   // then check if the test id exist
+   let testingID 
+   try{
+      testingID = res.patient.tests.id
+      if (testingID != req.params.testid){
+       return res.status(404).json({messsage: 'Cannot find fond'})
+      }
+      else {
+         res.send(res.patient.tests.id)
+      }
+    }catch(error){
+       return res.status(500).json({ message: error.message})
+    }
+})
+// post tests works
+router.post('/:id/tests', getPatient,async(req, res)=>{
+   // const {name, age, gender, room, clinical, weight, height, date} = req.body
+   const test = new Test(
+      {
+         patient_id: req.params.id,
+         date: req.body.date,
+         nurse_name: req.body.nurse_name,
+         type: req.body.type, 
+         category: req.body.category,
+         reading: req.body.reading,
+         id:req.body.id
+      }
+   ) 
+   try {
+      const newTest = await test.save()
+      res.status(201).json(newTest)
+    } catch (error) {
+       res.status(400).json({ message: error.message})
+    }
+})
+
+// patch the patient's tests it should be patch the data by test id, inplement this later
 router.patch('/:id/tests', getPatient, async(req, res)=>{
+   // after getting the patient, check the test id of the 
    if (req.body.date != null) {
       res.patient.tests.date = req.body.date
    }
