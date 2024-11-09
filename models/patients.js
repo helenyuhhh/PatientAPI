@@ -17,9 +17,9 @@ const patientSchema = new mongoose.Schema({
       required: true
     },
     clinical:{
-      systolic: { type:Number,required: true },
-      diastolic:{ type:Number,required: true },
-      condition: { type: String, required: true }
+      systolic: { type:Number,required: false },
+      diastolic:{ type:Number,required: false },
+      condition: { type: String, required: false }
       
     },
     weight: {

@@ -43,6 +43,9 @@ router.patch('/:id', getPatient, async(req, res)=>{
    if (req.body.clinical != null) {
       res.patient.clinical = req.body.clinical
    }
+   if (req.body.room != null) {
+      res.patient.room = req.body.room
+   }
    if (req.body.date != null) {
       res.patient.date = req.body.date
    }
@@ -91,7 +94,7 @@ router.get('/:id/tests/:testid', getTest, (req, res)=>{
    // then check if the test id exist
    res.send(res.test)
 })
-// post tests works??? can't see the results!
+// post test works
 router.post('/:id/tests', getPatient,async(req, res)=>{
    // const {name, age, gender, room, clinical, weight, height, date} = req.body
    const test = new Test(
