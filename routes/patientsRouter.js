@@ -117,36 +117,35 @@ router.post('/:id/tests', getPatient,async(req, res)=>{
 })
 
 // patch the patient's tests it should be patch the data by test id, inplement this later
-router.patch('/:id/tests', getPatient, async(req, res)=>{
-   // after getting the patient, check the test id of the 
+router.patch('/:id/tests/:testid', getTest, async(req, res)=>{
+   // update the reading
+   if (req.body.reading != null) {
+      res.test.reading = req.body.reading
+   }
+   // update the date
    if (req.body.date != null) {
-      res.patient.tests.date = req.body.date
+      res.test.date = req.body.date
    }
+   // update the nurse
    if (req.body.nurse_name != null) {
-      res.patient.tests.nurse_name = req.body.nurse_name
+      res.test.nurse_name = req.body.nurse_name
    }
+   // update the type
    if (req.body.type != null) {
-      res.patient.tests.type = req.body.type
+      res.test.type = req.body.type
    }
+   // update the category
    if (req.body.category != null) {
-      res.patient.tests.category = req.body.category
+      res.test.category = req.body.category
    }
-   // for reading
-   if (req.body.category != null) {
-      res.patient.tests.reading = req.body.reading
-   }
-   // for id
-   if (req.body.id != null) {
-      res.patient.tests.id = req.body.id
-   }
+   
    try {
-      const updatedClinical = await res.patient.save()
-      res.json(updatedClinical)
+      const updatedTest = await res.test.save()
+      res.json(updatedTest)
    }catch(error){
       res.status(400).json({message: error.message})
    }
 })
-
 // a function can be called multi times
 async function getPatient(req, res, next){
    let patient1
