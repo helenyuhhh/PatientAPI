@@ -88,13 +88,14 @@ router.get('/:id/tests', async(req, res)=>{
       res.status(500).json({ message: error.message})
    }
 })
+// get test by id
 router.get('/:id/tests/:testid', getTest, (req, res)=>{
    // returning the patient name with specific id
    // first check if the patient exist
    // then check if the test id exist
    res.send(res.test)
 })
-// post test works
+// post test by its id
 router.post('/:id/tests', getPatient,async(req, res)=>{
    // const {name, age, gender, room, clinical, weight, height, date} = req.body
    const test = new Test(
@@ -116,7 +117,7 @@ router.post('/:id/tests', getPatient,async(req, res)=>{
     }
 })
 
-// patch the patient's tests it should be patch the data by test id, inplement this later
+// patch test information by id
 router.patch('/:id/tests/:testid', getTest, async(req, res)=>{
    // update the reading
    if (req.body.reading != null) {
