@@ -37,7 +37,30 @@ const patientSchema = new mongoose.Schema({
     picture: {
       type: String,
       required: false
-    }
+    },
+    tests:{
+      patient_id: { type: String, required: true },
+      date: { type: Date, required: true },
+      nurse_name: { type: Date, required: true },
+      // type: Test
+      type: { type: String, required: true }, // to store the type: test name
+      // category: Blood Pressure, cause there are many other tests, Respiratory Rate, Blood Oxygen,
+      // and Heartbeat Rate
+      category: { type: Date, required: true },
+      // readings
+      reading: { // for Blood Pressure Test
+                 systolic: { type:Number,required: false },
+                 diastolic:{ type:Number,required: false },
+                 // for Respiratory Rate, safe for 12-18/min
+                 respiratory:{ type:Number, required: false},
+                 // for Blood Oxygen
+                 blood_oxygen:{ type:Number, required: false},
+                 // for heartbeat Rate
+                 heart_beat:{type:Number, required: false}
+                },
+      // test_id
+      id:{type:String, required:true}
+  }
     
 })
 // export default mongoose.model("patients", patientSchemaSchema)
