@@ -1,7 +1,9 @@
 import express from "express"
 import Patient from "../models/patients.js"
 import Test from "../models/tests.js"
+import mongoose from "mongoose";
 const router = express.Router();
+
 // getting all patients
 router.get('/', async(req, res) =>{
    try{
@@ -106,7 +108,7 @@ router.post('/:id', getPatient,async(req, res)=>{
    )
    if (foundText) {
       res.status(400).json({ message: "Test exists!"})
-
+   
    }
    const test = 
       {
@@ -168,16 +170,19 @@ router.patch('/:id/tests/:testid', getTest, async(req, res)=>{
    }
 })
 // add delete function, removes the test from tests array
-router.delete('/:id/tests/:testid', getPatient, async(req, res)=>{
-   // first check if the test is exists, using test id
-   const testExist = res.patient.tests.find(test=>test.id == req.params.testid)
-   if (!testExist) {
-      res.status(404).json({ message: "Test doesn't exist!"})
+router.delete('/:id/tests/:testid', getPatient, async (req, res) => {
+   // convert the id to objectID
+   const testID = new mongoose.Types.ObjectId(req.params.testid)
+   try{
+      await res.patient.updateOne(
+         { _id: req.params.id },  // Find the patient by their ID
+         { $pull: { tests: { _id: testID } } })
+         res.status(200).json({ message: 'Test deleted successfully' });
+   }catch(error){
+      res.status(400).json({message: error.message})
    }
-   
 
-
-})
+});
 // a function can be called multi times
 async function getPatient(req, res, next){
    let patient1
