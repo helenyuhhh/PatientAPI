@@ -82,7 +82,7 @@ router.delete('/:id', getPatient, async(req, res)=>{
 // get patient's test list by passing the id, it's working now
 router.get('/:id/tests', async(req, res)=>{
    try{
-      const tests = await Test.find() // get all the patients from the patiens
+      const tests = await Test.find()
       res.json(tests)
    } catch (error) {
       res.status(500).json({ message: error.message})
@@ -98,9 +98,19 @@ router.get('/:id/tests/:testid', getTest, (req, res)=>{
 // post test by its id
 router.post('/:id', getPatient,async(req, res)=>{
    // const {name, age, gender, room, clinical, weight, height, date} = req.body
+   // check if ther's any existed tests, check the date, cat and nurse
+   const foundText = res.patient.tests.find(test => 
+      test.date === req.body.date &&
+      test.category === req.body.category &&
+      test.nurse_name === req.body.nurse_name
+   )
+   if (foundText) {
+      res.status(400).json({ message: "Test exists!"})
+
+   }
    const test = 
       {
-         patient_id: res.patient.id,
+         patient_id: req.params.id,
          date: req.body.date,
          nurse_name: req.body.nurse_name,
          type: req.body.type, 
@@ -156,6 +166,17 @@ router.patch('/:id/tests/:testid', getTest, async(req, res)=>{
    }catch(error){
       res.status(400).json({message: error.message})
    }
+})
+// add delete function, removes the test from tests array
+router.delete('/:id/tests/:testid', getPatient, async(req, res)=>{
+   // first check if the test is exists, using test id
+   const testExist = res.patient.tests.find(test=>test.id == req.params.testid)
+   if (!testExist) {
+      res.status(404).json({ message: "Test doesn't exist!"})
+   }
+   
+
+
 })
 // a function can be called multi times
 async function getPatient(req, res, next){
