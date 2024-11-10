@@ -58,9 +58,9 @@ router.patch('/:id', getPatient, async(req, res)=>{
    if (req.body.gender != null) {
       res.patient.gender = req.body.gender
    }
-   /*if (req.body.tests != null) {
+   if (req.body.tests != null) {
       res.patient.tests = req.body.tests
-   }*/
+   }
    try {
       const updatedClinical = await res.patient.save()
       res.json(updatedClinical)
@@ -78,7 +78,7 @@ router.delete('/:id', getPatient, async(req, res)=>{
    res.status(500).json({message: error.message})
   }
 })
-
+/********************************************************TESTS***************************************************** */
 // get patient's test list by passing the id, it's working now
 router.get('/:id/tests', async(req, res)=>{
    try{
@@ -96,22 +96,32 @@ router.get('/:id/tests/:testid', getTest, (req, res)=>{
    res.send(res.test)
 })
 // post test by its id
-router.post('/:id/tests', getPatient,async(req, res)=>{
+router.post('/:id', getPatient,async(req, res)=>{
    // const {name, age, gender, room, clinical, weight, height, date} = req.body
-   const test = new Test(
+   const test = 
       {
-         patient_id: req.params.id,
+         patient_id: res.patient.id,
          date: req.body.date,
          nurse_name: req.body.nurse_name,
          type: req.body.type, 
          category: req.body.category,
-         reading: req.body.reading,
+         reading:{
+            blood_pressure: {
+               systolic: req.body.reading.blood_pressure?.systolic || null,
+               diastolic: req.body.reading.blood_pressure?.diastolic || null,
+            },
+            respiratory_rate: req.body.reading.respiratory_rate || null,
+            blood_oxygen_level: req.body.reading.blood_oxygen_level || null,
+            heartbeat_rate: req.body.reading.heartbeat_rate || null
+         },
          id:req.body.id
       }
-   ) 
+   
    try {
-      const newTest = await test.save()
-      res.status(201).json(newTest)
+      // add new test to test array
+      res.patient.tests.push(test)
+      const patientUpdate = await res.patient.save()
+      res.status(201).json(patientUpdate)
     } catch (error) {
        res.status(400).json({ message: error.message})
     }

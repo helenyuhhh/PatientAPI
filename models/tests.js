@@ -22,7 +22,7 @@ const testSchema = new mongoose.Schema({
                // for Blood Oxygen
                blood_oxygen:{ type:Number, required: false},
                // for heartbeat Rate
-               heart_beat:{type:Number, required: false}
+               heartbeat_rate:{type:Number, required: false}
               },
     // test_id
     id:{type:String, required:true}
