@@ -5,6 +5,27 @@ import mongoose from "mongoose";
 const router = express.Router();
 
 // getting all patients
+/**
+ * @swagger
+ * /api/patients:
+ *   get:
+ *     summary: Get all patients
+ *     description: Returns a list of all the patients.
+ *     responses:
+ *       200:
+ *         description: Patient List.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 type: object
+ *                 properties:
+ *                   id:
+ *                     type: string
+ *                   name:
+ *                     type: string
+ */
 router.get('/', async(req, res) =>{
    try{
       const patients = await Patient.find() // get all the patients from the patiens
@@ -13,11 +34,80 @@ router.get('/', async(req, res) =>{
       res.status(500).json({ message: error.message})
    }
 })
+
 // getting one patients by id?
+/**
+ * @swagger
+ * /api/patients/{id}:
+ *   get:
+ *     summary: Get a patient by ID
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: ID of the patient to retrieve.
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Patient Get.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 id:
+ *                   type: string
+ *                 name:
+ *                   type: string
+ *       404:
+ *         description: Patient not found.
+ */
 router.get('/:id', getPatient, (req, res)=>{
    res.send(res.patient)// returning the patient name with specific id
 })
 // creating one
+/**
+ * @swagger
+ * /api/patients:
+ *   post:
+ *     summary: Add a new patient
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               name:
+ *                 type: string
+ *               age:
+ *                 type: integer
+ *               gender:
+ *                 type: string
+ *               room:
+ *                 type: string
+ *               clinical:
+ *                 type: object
+ *               weight:
+ *                 type: string
+ *               height:
+ *                 type: string
+ *               date:
+ *                 type: string
+ *                 format: date
+ *               picture:
+ *                 type: string
+ *               tests:
+ *                 type: array
+ *                 items:
+ *                   type: object
+ *     responses:
+ *       201:
+ *         description: Patient added.
+ *       400:
+ *         description: Bad request.
+ */
 router.post('/', async(req, res)=>{
    // const {name, age, gender, room, clinical, weight, height, date} = req.body
    const patient = new Patient({
@@ -41,6 +131,45 @@ router.post('/', async(req, res)=>{
   
 })
 // only update the data that we sent 
+/**
+ * @swagger
+ * /api/patients/{id}:
+ *   patch:
+ *     summary: Update a patient's data with given info
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: ID of the patient to update.
+ *         schema:
+ *           type: string
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               room:
+ *                 type: string
+ *               weight:
+ *                 type: string
+ *               height:
+ *                 type: string
+ *               gender:
+ *                 type: string
+ *               date:
+ *                 type: string
+ *               tests:
+ *                 type: array
+ *     responses:
+ *       200:
+ *         description: Patient Data updated.
+ *       400:
+ *         description: Bad request.
+ *       404:
+ *         description: Patient not found.
+ */
 router.patch('/:id', getPatient, async(req, res)=>{
    if (req.body.clinical != null) {
       res.patient.clinical = req.body.clinical
@@ -71,6 +200,33 @@ router.patch('/:id', getPatient, async(req, res)=>{
    }
 })
 // deleting one
+/**
+ * @swagger
+ * /api/patients/{id}:
+ *   delete:
+ *     summary: Delete a patient by ID
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: ID of the patient to retrieve.
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Patient deleted.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 id:
+ *                   type: string
+ *                 name:
+ *                   type: string
+ *       404:
+ *         description: Patient not found.
+ */
 router.delete('/:id', getPatient, async(req, res)=>{
   // res.patient
   try{
@@ -82,6 +238,59 @@ router.delete('/:id', getPatient, async(req, res)=>{
 })
 /********************************************************TESTS***************************************************** */
 // get patient's test list by passing the id, it's working now
+/**
+ * @swagger
+ * /api/patients/{id}/tests:
+ *   get:
+ *     summary: Get all tests for a specific patient
+ *     description: Retrieve all test records with a given patient id.
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: The ID of the patient.
+ *     responses:
+ *       200:
+ *         description: Tests list
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 type: object
+ *                 properties:
+ *                   patient_id:
+ *                     type: string
+ *                   date:
+ *                     type: string
+ *                     format: date
+ *                   nurse_name:
+ *                     type: string
+ *                   type:
+ *                     type: string
+ *                   category:
+ *                     type: string
+ *                   reading:
+ *                     type: object
+ *                     properties:
+ *                       blood_pressure:
+ *                         type: object
+ *                         properties:
+ *                           systolic:
+ *                             type: integer
+ *                           diastolic:
+ *                             type: integer
+ *                       respiratory_rate:
+ *                         type: integer
+ *                       blood_oxygen_level:
+ *                         type: integer
+ *                       heartbeat_rate:
+ *                         type: integer
+ *       500:
+ *         description: Server error
+ */
 router.get('/:id/tests', async(req, res)=>{
    try{
       const tests = await Test.find()
@@ -91,6 +300,58 @@ router.get('/:id/tests', async(req, res)=>{
    }
 })
 // get test by id
+/**
+ * @swagger
+ * /api/patients/{id}/tests/{testid}:
+ *   get:
+ *     summary: Get a test by ID
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: ID of the test to retrieve.
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Test.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 type: object
+ *                 properties:
+ *                   patient_id:
+ *                     type: string
+ *                   date:
+ *                     type: string
+ *                     format: date
+ *                   nurse_name:
+ *                     type: string
+ *                   type:
+ *                     type: string
+ *                   category:
+ *                     type: string
+ *                   reading:
+ *                     type: object
+ *                     properties:
+ *                       blood_pressure:
+ *                         type: object
+ *                         properties:
+ *                           systolic:
+ *                             type: integer
+ *                           diastolic:
+ *                             type: integer
+ *                       respiratory_rate:
+ *                         type: integer
+ *                       blood_oxygen_level:
+ *                         type: integer
+ *                       heartbeat_rate:
+ *                         type: integer
+ *       500:
+ *         description: Server error
+ */
 router.get('/:id/tests/:testid', getTest, (req, res)=>{
    // returning the patient name with specific id
    // first check if the patient exist
@@ -98,6 +359,59 @@ router.get('/:id/tests/:testid', getTest, (req, res)=>{
    res.send(res.test)
 })
 // post test by its id
+/**
+ * @swagger
+ * /api/patients/{id}/tests:
+ *   post:
+ *     summary: Add a new test
+ *     description: Create a new test and add it to test array
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: ID of the patient.
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               date:
+ *                 type: string
+ *                 format: date
+ *               nurse_name:
+ *                 type: string
+ *               type:
+ *                 type: string
+ *               category:
+ *                 type: string
+ *               reading:
+ *                 type: object
+ *                 properties:
+ *                   blood_pressure:
+ *                     type: object
+ *                     properties:
+ *                       systolic:
+ *                         type: integer
+ *                       diastolic:
+ *                         type: integer
+ *                   respiratory_rate:
+ *                     type: integer
+ *                   blood_oxygen_level:
+ *                     type: integer
+ *                   heartbeat_rate:
+ *                     type: integer
+ *     responses:
+ *       201:
+ *         description: Test created
+ *       400:
+ *         description: Test already exists or validation error
+ *       500:
+ *         description: Server error
+ */
 router.post('/:id', getPatient,async(req, res)=>{
    // const {name, age, gender, room, clinical, weight, height, date} = req.body
    // check if ther's any existed tests, check the date, cat and nurse
@@ -139,7 +453,101 @@ router.post('/:id', getPatient,async(req, res)=>{
     }
 })
 
+
 // patch test information by id
+/**
+ * @swagger
+ * /api/patients/{id}/tests/{testid}:
+ *   patch:
+ *     summary: Update a specific test by test ID
+ *     description: Update the tests with data provided
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: The ID of the patient.
+ *       - in: path
+ *         name: testid
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: The ID of the test.
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               reading:
+ *                 type: object
+ *                 properties:
+ *                   blood_pressure:
+ *                     type: object
+ *                     properties:
+ *                       systolic:
+ *                         type: integer
+ *                       diastolic:
+ *                         type: integer
+ *                   respiratory_rate:
+ *                     type: integer
+ *                   blood_oxygen_level:
+ *                     type: integer
+ *                   heartbeat_rate:
+ *                     type: integer
+ *               date:
+ *                 type: string
+ *                 format: date
+ *               nurse_name:
+ *                 type: string
+ *               type:
+ *                 type: string
+ *               category:
+ *                 type: string
+ *     responses:
+ *       200:
+ *         description: Test updated
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 patient_id:
+ *                   type: string
+ *                 date:
+ *                   type: string
+ *                   format: date
+ *                 nurse_name:
+ *                   type: string
+ *                 type:
+ *                   type: string
+ *                 category:
+ *                   type: string
+ *                 reading:
+ *                   type: object
+ *                   properties:
+ *                     blood_pressure:
+ *                       type: object
+ *                       properties:
+ *                         systolic:
+ *                           type: integer
+ *                         diastolic:
+ *                           type: integer
+ *                     respiratory_rate:
+ *                       type: integer
+ *                     blood_oxygen_level:
+ *                       type: integer
+ *                     heartbeat_rate:
+ *                       type: integer
+ *       400:
+ *         description: Validation or request error
+ *       404:
+ *         description: Test not found
+ *       500:
+ *         description: Server error
+ */
 router.patch('/:id/tests/:testid', getTest, async(req, res)=>{
    // update the reading
    if (req.body.reading != null) {
@@ -174,6 +582,43 @@ router.patch('/:id/tests/:testid', getTest, async(req, res)=>{
    }
 })
 // add delete function, removes the test from tests array
+/**
+ * @swagger
+ * /api/patients/{id}/tests/{testid}:
+ *   delete:
+ *     summary: Delete a specific test by test ID
+ *     description: Remove a test by its id from the tests list
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: The ID of the patient.
+ *       - in: path
+ *         name: testid
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: The ID of the test.
+ *     responses:
+ *       200:
+ *         description: Test deleted successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "Test deleted successfully"
+ *       400:
+ *         description: Deletion or request error
+ *       404:
+ *         description: Test not found
+ *       500:
+ *         description: Server error
+ */
 router.delete('/:id/tests/:testid', getPatient, async (req, res) => {
    // convert the id to objectID
    const testID = new mongoose.Types.ObjectId(req.params.testid)
