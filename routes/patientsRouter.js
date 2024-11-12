@@ -143,6 +143,10 @@ router.post('/:id', getPatient,async(req, res)=>{
 router.patch('/:id/tests/:testid', getTest, async(req, res)=>{
    // update the reading
    if (req.body.reading != null) {
+      if(req.body.reading.category == "Blood Pressure") {
+         res.test.reading.blood_pressure.systolic = req.body.reading.blood_pressure.systolic
+         res.test.reading.blood_pressure.diastolic = req.body.reading.blood_pressure.diastolic
+      }
       res.test.reading = req.body.reading
    }
    // update the date
