@@ -412,7 +412,7 @@ router.get('/:id/tests/:testid', getTest, (req, res)=>{
  *       500:
  *         description: Server error
  */
-router.post('/:id', getPatient,async(req, res)=>{
+router.post('/:id/tests', getPatient,async(req, res)=>{
    // const {name, age, gender, room, clinical, weight, height, date} = req.body
    // check if ther's any existed tests, check the date, cat and nurse
    const foundText = res.patient.tests.find(test => 
@@ -424,34 +424,24 @@ router.post('/:id', getPatient,async(req, res)=>{
       res.status(400).json({ message: "Test exists!"})
    
    }
-   const test = 
-      {
-         patient_id: req.params.id,
-         date: req.body.date,
-         nurse_name: req.body.nurse_name,
-         type: req.body.type, 
-         category: req.body.category,
-         reading:{
-            blood_pressure: {
-               systolic: req.body.reading.blood_pressure?.systolic || null,
-               diastolic: req.body.reading.blood_pressure?.diastolic || null,
-            },
-            respiratory_rate: req.body.reading.respiratory_rate || null,
-            blood_oxygen_level: req.body.reading.blood_oxygen_level || null,
-            heartbeat_rate: req.body.reading.heartbeat_rate || null
-         },
-         id:req.body.id
-      }
-   
-   try {
-      // add new test to test array
-      res.patient.tests.push(test)
-      const patientUpdate = await res.patient.save()
-      res.status(201).json(patientUpdate)
-    } catch (error) {
-       res.status(400).json({ message: error.message})
-    }
-})
+   const test = new Test({
+      patient_id: req.params.id,
+      date: req.body.date,
+      nurse_name: req.body.nurse_name,
+      type: req.body.type, 
+      category: req.body.category,
+      reading: req.body.reading,
+      id:req.body.id
+   })
+      try {
+         const newTest = await test.save()
+         res.patient.tests.push(newTest)
+         res.status(201).json(newTest)
+       } catch (error) {
+          res.status(400).json({ message: error.message})
+       }
+      
+    })
 
 
 // patch test information by id
