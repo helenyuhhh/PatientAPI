@@ -115,7 +115,7 @@ router.post('/', async(req, res)=>{
       age: req.body.age,
       gender: req.body.gender,
       room: req.body.room,
-      clinical: req.body.clinical,
+      condition: req.body.condition,
       weight: req.body.weight,
       height: req.body.height,
       date: req.body.date,
@@ -171,8 +171,8 @@ router.post('/', async(req, res)=>{
  *         description: Patient not found.
  */
 router.patch('/:id', getPatient, async(req, res)=>{
-   if (req.body.clinical != null) {
-      res.patient.clinical = req.body.clinical
+   if (req.body.consition != null) {
+      res.patient.consition = req.body.condition
    }
    if (req.body.room != null) {
       res.patient.room = req.body.room
