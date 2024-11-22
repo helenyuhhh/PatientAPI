@@ -171,8 +171,8 @@ router.post('/', async(req, res)=>{
  *         description: Patient not found.
  */
 router.patch('/:id', getPatient, async(req, res)=>{
-   if (req.body.consition != null) {
-      res.patient.consition = req.body.condition
+   if (req.body.condition != null) {
+      res.patient.condition = req.body.condition
    }
    if (req.body.room != null) {
       res.patient.room = req.body.room
