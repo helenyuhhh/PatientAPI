@@ -9,7 +9,7 @@ const testSchema = new mongoose.Schema({
     date: { type: Date, required: true },
     nurse_name: { type: String, required: true },
     // type: Test
-    type: { type: String, required: true }, // to store the type: test name
+    type: { type: String, required: false }, // to store the type: test name
     // category: Blood Pressure, cause there are many other tests, Respiratory Rate, Blood Oxygen,
     // and Heartbeat Rate
     category: { type: String, required: true },
