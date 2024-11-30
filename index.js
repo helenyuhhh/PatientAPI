@@ -20,7 +20,7 @@ const swaggerOptions = {
     },
     servers: [
       {
-        url: 'http://172.16.7.126:3000', 
+        url: 'http://172.16.7.126:8080', 
       },
     ],
   },
