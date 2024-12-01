@@ -16,12 +16,29 @@ const patientSchema = new mongoose.Schema({
       type: String,
       required: true
     },
-    clinical:{
-      systolic: { type:Number,required: false },
-      diastolic:{ type:Number,required: false },
-      condition: { type: String, required: false }
-      
+    condition: {
+      type: String,
+      required: true
     },
+    tests: [
+      {
+        patient_id: { type: mongoose.Schema.Types.ObjectId, ref: 'Patient', required: false , required: false},
+        date: { type:String, required: false},
+        nurse_name: { type:String, required: false},
+        type: { type:String, required: false}, 
+        category: { type:String, required: false},
+        reading: { 
+          blood_pressure:{ 
+            systolic:{type:Number, required: false},
+            diastolic:{type:Number, required: false}
+          },
+          respiratory_rate:{ type:Number, required: false},
+          blood_oxygen_level:{ type:Number, required: false},
+          heartbeat_rate:{ type:Number, required: false}
+        },
+      }
+
+    ],
     weight: {
       type: String,
       required: true
