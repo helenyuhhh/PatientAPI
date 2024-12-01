@@ -41,4 +41,3 @@ mongoose.connect(mongourl).then(()=>{
   })
 }).catch((error)=>console.log(error));
 app.use("/api/patients", router);
-server.timeout = 600000
