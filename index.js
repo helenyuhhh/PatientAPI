@@ -31,7 +31,7 @@ app.use(bodyParser.json());
 app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(swaggerDocs))
 dotenv.config();
 
-const PORT = process.env.PORT || 8080;
+const PORT = 8080;
 const mongourl = process.env.MONGO_URL;
 
 mongoose.connect(mongourl).then(()=>{
