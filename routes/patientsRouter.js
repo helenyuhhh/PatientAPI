@@ -26,7 +26,7 @@ const router = express.Router();
  *                   name:
  *                     type: string
  */
-router.get('/', async(req, res) =>{
+router.get('/api/patients', async(req, res) =>{
    try{
       const patients = await Patient.find() // get all the patients from the patiens
       res.json(patients)
