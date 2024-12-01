@@ -36,8 +36,9 @@ const mongourl = process.env.MONGO_URL;
 
 mongoose.connect(mongourl).then(()=>{
     console.log("Connection success");
-    app.listen(PORT,()=>{
-        console.log(`Server is running on port ${PORT}`)
-    })
+    app.listen(PORT, '0.0.0.0',()=>{
+      console.log(`Server is running on ${PORT}`)
+  })
 }).catch((error)=>console.log(error));
 app.use("/api/patients", router);
+server.timeout = 600000
