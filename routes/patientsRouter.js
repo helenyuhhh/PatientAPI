@@ -312,9 +312,15 @@ router.get('/:id/tests', async(req, res)=>{
  *       - in: path
  *         name: id
  *         required: true
- *         description: ID of the test to retrieve.
  *         schema:
  *           type: string
+ *         description: The ID of the patient.
+ *       - in: path
+ *         name: testid
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: The ID of the test.
  *     responses:
  *       200:
  *         description: Test.

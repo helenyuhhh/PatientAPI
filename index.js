@@ -26,7 +26,7 @@ const swaggerOptions = {
       },
     ],
   },
-  apis: ['./routes/*.js', './models/*.js'], // Path to your route files
+  apis: ['./routes/*.js', './models/*.js'], 
 };
 const swaggerDocs = swaggerJsDoc(swaggerOptions)
 app.use(bodyParser.json());
