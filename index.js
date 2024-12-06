@@ -5,6 +5,7 @@ import bodyParser from "body-parser";
 import router from "./routes/patientsRouter.js";
 import swaggerJsDoc from 'swagger-jsdoc';
 import swaggerUI from 'swagger-ui-express';
+import cors from'cors'
 
 const app = express();
 const swaggerOptions = {
@@ -21,6 +22,7 @@ const swaggerOptions = {
     servers: [
       {
         url: 'http://172.16.7.126:8080', 
+        //url : 'https://mapd713patientapi-g3dpdtdthvcbhwbh.canadacentral-01.azurewebsites.net'
       },
     ],
   },
@@ -28,6 +30,9 @@ const swaggerOptions = {
 };
 const swaggerDocs = swaggerJsDoc(swaggerOptions)
 app.use(bodyParser.json());
+app.use(cors({
+  origin:["https://mapd713patientapi-g3dpdtdthvcbhwbh.canadacentral-01.azurewebsites.net"]
+}))
 app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(swaggerDocs))
 dotenv.config();
 // running now on my machineS
