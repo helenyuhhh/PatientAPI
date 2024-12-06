@@ -21,8 +21,8 @@ const swaggerOptions = {
     },
     servers: [
       {
-        url: 'http://172.16.7.126:8080', 
-        //url : 'https://mapd713patientapi-g3dpdtdthvcbhwbh.canadacentral-01.azurewebsites.net'
+        // url: 'http://172.16.7.126:8080', 
+        url : 'https://mapd713patientapi-g3dpdtdthvcbhwbh.canadacentral-01.azurewebsites.net/api/patients'
       },
     ],
   },
@@ -31,7 +31,7 @@ const swaggerOptions = {
 const swaggerDocs = swaggerJsDoc(swaggerOptions)
 app.use(bodyParser.json());
 app.use(cors({
-  origin:["https://mapd713patientapi-g3dpdtdthvcbhwbh.canadacentral-01.azurewebsites.net"]
+  origin:["https://mapd713patientapi-g3dpdtdthvcbhwbh.canadacentral-01.azurewebsites.net/api/patients"]
 }))
 app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(swaggerDocs))
 dotenv.config();
