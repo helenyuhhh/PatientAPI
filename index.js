@@ -30,7 +30,7 @@ const swaggerDocs = swaggerJsDoc(swaggerOptions)
 app.use(bodyParser.json());
 app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(swaggerDocs))
 dotenv.config();
-
+// running now on my machineS
 const PORT = process.env.PORT || 8080
 const mongourl = process.env.MONGO_URL
 
