@@ -21,8 +21,8 @@ const swaggerOptions = {
     },
     servers: [
       {
-        //url: 'http://172.16.7.126:8080', 
-        url : 'https://mapd713patientapi-g3dpdtdthvcbhwbh.canadacentral-01.azurewebsites.net'
+        url: 'http://172.16.7.126:8080', 
+        //url : 'https://mapd713patientapi-g3dpdtdthvcbhwbh.canadacentral-01.azurewebsites.net'
       },
     ],
   },
@@ -36,7 +36,7 @@ app.use(cors({
 app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(swaggerDocs))
 dotenv.config();
 
-const PORT = process.env.PORT || 8000
+const PORT = process.env.PORT || 8080
 const mongourl = process.env.MONGO_URL
 
 mongoose.connect(mongourl).then(()=>{
