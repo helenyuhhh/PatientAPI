@@ -107,6 +107,15 @@ router.get('/:id', getPatient, (req, res)=>{
  *         description: Patient successfully created.
  *         schema:
  *           type: object
+ *           required:
+ *             - name
+ *             - age
+ *             - gender
+ *             - room
+ *             - condition
+ *             - weight
+ *             - height
+ *             - date
  *           properties:
  *             _id:
  *               type: string
@@ -420,14 +429,18 @@ router.get('/:id/tests/:testid', getTest, (req, res)=>{
  *               date:
  *                 type: string
  *                 format: date
+ *                 required: true
  *               nurse_name:
  *                 type: string
+ *                 required: true
  *               type:
  *                 type: string
  *               category:
  *                 type: string
+ *                 required: true
  *               reading:
  *                 type: object
+ *                 required: true
  *                 properties:
  *                   blood_pressure:
  *                     type: object
