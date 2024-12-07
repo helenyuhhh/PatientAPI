@@ -78,6 +78,14 @@ router.get('/:id', getPatient, (req, res)=>{
  *         application/json:
  *           schema:
  *             type: object
+ *             required:
+ *               - name
+ *               - age
+ *               - gender
+ *               - room
+ *               - weight
+ *               - height
+ *               - date
  *             properties:
  *               name:
  *                 type: string
@@ -101,21 +109,14 @@ router.get('/:id', getPatient, (req, res)=>{
  *               tests:
  *                 type: array
  *                 items:
- *                   type: object
+ *                  type: object
+ * 
+ * 
  *     responses:
  *       201:
  *         description: Patient successfully created.
  *         schema:
  *           type: object
- *           required:
- *             - name
- *             - age
- *             - gender
- *             - room
- *             - condition
- *             - weight
- *             - height
- *             - date
  *           properties:
  *             _id:
  *               type: string
@@ -475,7 +476,7 @@ router.post('/:id/tests', getPatient,async(req, res)=>{
       res.status(400).json({ message: "Test exists!"})
    
    }
-   
+
    const test = new Test({
       patient_id: req.params.id,
       date: req.body.date,
