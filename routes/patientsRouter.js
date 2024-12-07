@@ -180,61 +180,7 @@ router.post('/', async(req, res)=>{
   
 })
 // only update the data that we sent 
-/**
- * @swagger
- * /api/patients/{id}:
- *   patch:
- *     summary: Update a patient's data with given info
- *     parameters:
- *       - in: path
- *         name: patient id
- *         required: true
- *         description: ID of the patient to update.
- *       - in: path
- *         name: room
- *         required: false
- *         description: room of the patient to update.
- *       - in: path
- *         name: weight
- *         required: false
- *         description: weight of the patient to update.
- *       - in: path
- *         name: height
- *         required: false
- *         description: height of the patient to update.
- *       - in: path
- *         name: date
- *         required: false
- *         description: date of the patient to update.
- *         schema:
- *           type: string
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             type: object
- *             properties:
- *               room:
- *                 type: string
- *               weight:
- *                 type: string
- *               height:
- *                 type: string
- *               gender:
- *                 type: string
- *               date:
- *                 type: string
- *               tests:
- *                 type: array
- *     responses:
- *       200:
- *         description: Patient Data updated.
- *       400:
- *         description: Bad request.
- *       404:
- *         description: Patient not found.
- */
+
 router.patch('/:id', getPatient, async(req, res)=>{
    if (req.body.condition != null) {
       res.patient.condition = req.body.condition
