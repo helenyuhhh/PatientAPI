@@ -104,7 +104,36 @@ router.get('/:id', getPatient, (req, res)=>{
  *                   type: object
  *     responses:
  *       201:
- *         description: Patient added.
+ *         description: Patient successfully created.
+ *         schema:
+ *           type: object
+ *           properties:
+ *             _id:
+ *               type: string
+ *               description: The ID of the newly created patient.
+ *             name:
+ *               type: string
+ *             age:
+ *               type: integer
+ *             gender:
+ *               type: string
+ *             room:
+ *               type: string
+ *             condition:
+ *               type: string
+ *             weight:
+ *               type: number
+ *             height:
+ *               type: number
+ *             date:
+ *               type: string
+ *               format: date
+ *             tests:
+ *               type: array
+ *               items:
+ *                 type: object
+ *             picture:
+ *               type: string
  *       400:
  *         description: Bad request.
  */
