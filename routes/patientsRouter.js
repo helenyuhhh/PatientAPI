@@ -470,11 +470,12 @@ router.post('/:id/tests', getPatient,async(req, res)=>{
       test.date === req.body.date &&
       test.category === req.body.category &&
       test.nurse_name === req.body.nurse_name
-   )
+   ) 
    if (foundText) {
       res.status(400).json({ message: "Test exists!"})
    
    }
+   
    const test = new Test({
       patient_id: req.params.id,
       date: req.body.date,
