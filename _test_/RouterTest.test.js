@@ -1,10 +1,9 @@
 // test Router
-
+import { jest } from '@jest/globals';
 import Patient from '../models/patients.js'
 import router from '../routes/patientsRouter.js'
 
 jest.mock('../models/patients.js'); // Mock the Patient model
-const jest = require('@jest/globals');
 
 describe('GET /api/patients', () => {
   afterEach(() => {
