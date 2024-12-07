@@ -117,7 +117,17 @@ router.get('/:id', getPatient, (req, res)=>{
  *               - date
  *             properties:
  *               name:
- *                 type: string
+ *                 type: object
+ *                 required:
+ *                   - first
+ *                   - last
+ *                 properties:
+ *                   first:
+ *                     type: string
+ *                     description: The first name of the patient
+ *                   last:
+ *                     type: string
+ *                     description
  *               age:
  *                 type: integer
  *               gender:
@@ -144,35 +154,6 @@ router.get('/:id', getPatient, (req, res)=>{
  *     responses:
  *       201:
  *         description: Patient successfully created.
- *         schema:
- *           type: object
- *           properties:
- *             _id:
- *               type: string
- *               description: The ID of the newly created patient.
- *             name:
- *               type: string
- *             age:
- *               type: integer
- *             gender:
- *               type: string
- *             room:
- *               type: string
- *             condition:
- *               type: string
- *             weight:
- *               type: number
- *             height:
- *               type: number
- *             date:
- *               type: string
- *               format: date
- *             tests:
- *               type: array
- *               items:
- *                 type: object
- *             picture:
- *               type: string
  *       400:
  *         description: Bad request.
  */
@@ -206,9 +187,25 @@ router.post('/', async(req, res)=>{
  *     summary: Update a patient's data with given info
  *     parameters:
  *       - in: path
- *         name: id
+ *         name: patient id
  *         required: true
  *         description: ID of the patient to update.
+ *       - in: path
+ *         name: room
+ *         required: false
+ *         description: room of the patient to update.
+ *       - in: path
+ *         name: weight
+ *         required: false
+ *         description: weight of the patient to update.
+ *       - in: path
+ *         name: height
+ *         required: false
+ *         description: height of the patient to update.
+ *       - in: path
+ *         name: date
+ *         required: false
+ *         description: date of the patient to update.
  *         schema:
  *           type: string
  *     requestBody:
@@ -444,8 +441,28 @@ router.get('/:id/tests/:testid', getTest, (req, res)=>{
  *     description: Create a new test and add it to test array
  *     parameters:
  *       - in: path
- *         name: id
+ *         name: patient id
  *         required: true
+ *       - in: path
+ *         name: category
+ *         required: true
+ *         description: category of the test.
+ *       - in: path
+ *         name: date
+ *         required: true
+ *         description: date of the patient to update.
+ *       - in: path
+ *         name: nurse name
+ *         required: true
+ *         description: nurse name.
+ *       - in: path
+ *         name: reading
+ *         required: true
+ *         description: ID of the patient to update.
+ *       - in: path
+ *         name: test id
+ *         required: true
+ *         description: ID of the test.
  *         schema:
  *           type: string
  *         description: ID of the patient.
