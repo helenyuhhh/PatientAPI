@@ -75,30 +75,44 @@ router.get('/:id', getPatient, (req, res)=>{
  *     parameters:
  *       - in: path
  *         name: new name
+ *         schema:
+ *           type: string
  *         required: true
  *         description: name of the new patient.
  *       - in: path
  *         name: age
+ *         schema:
+ *           type: integer
  *         required: true
  *         description: age of the patient .
  *       - in: path
  *         name: gender
+ *         schema:
+ *           type: string
  *         required: true
  *         description: gender of the patient.
  *       - in: path
  *         name: room
+ *         schema:
+ *           type: string
  *         required: true
  *         description: room of the patient.
  *       - in: path
  *         name: weight
+ *         schema:
+ *           type: string
  *         required: true
  *         description: weight of the patient.
  *       - in: path
  *         name: height
+ *         schema:
+ *           type: string
  *         required: true
  *         description: height of the patient .
  *       - in: path
  *         name: date
+ *         schema:
+ *           type: string
  *         required: true
  *         description: date .
  *     requestBody:
