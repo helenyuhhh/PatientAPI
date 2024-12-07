@@ -72,6 +72,35 @@ router.get('/:id', getPatient, (req, res)=>{
  * /api/patients:
  *   post:
  *     summary: Add a new patient
+ *     parameters:
+ *       - in: path
+ *         name: new name
+ *         required: true
+ *         description: name of the new patient.
+ *       - in: path
+ *         name: age
+ *         required: true
+ *         description: age of the patient .
+ *       - in: path
+ *         name: gender
+ *         required: true
+ *         description: gender of the patient.
+ *       - in: path
+ *         name: room
+ *         required: true
+ *         description: room of the patient.
+ *       - in: path
+ *         name: weight
+ *         required: true
+ *         description: weight of the patient.
+ *       - in: path
+ *         name: height
+ *         required: true
+ *         description: height of the patient .
+ *       - in: path
+ *         name: date
+ *         required: true
+ *         description: date .
  *     requestBody:
  *       required: true
  *       content:
@@ -349,7 +378,7 @@ router.get('/:id/tests', async(req, res)=>{
  *     summary: Get a test by ID
  *     parameters:
  *       - in: path
- *         name: id
+ *         name: patient id
  *         required: true
  *         schema:
  *           type: string
