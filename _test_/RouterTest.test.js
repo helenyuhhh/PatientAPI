@@ -1,14 +1,15 @@
 // test Router
+import express from 'express'
 import { jest } from '@jest/globals';
 import Patient from '../models/patients.js'
 import router from '../routes/patientsRouter.js'
 
-jest.mock('../models/patients.js'); // Mock the Patient model
-
+jest.mock('../models/patients.js');
+jest.mock('../')
 describe('GET /api/patients', () => {
   afterEach(() => {
     jest.clearAllMocks()
-  });
+  })
 
   it('returns a list of patient and status 200', async () => {
     // mock patients
@@ -83,3 +84,47 @@ describe('GET /api/patients', () => {
     expect(Patient.find).toHaveBeenCalledTimes(1); // Ensure the find method was called
   });
 });
+
+describe('GET /api/patients/:id', async () => {
+  // test get patient by id
+  // clean after each test
+  afterEach(() => {
+    jest.clearAllMocks()
+  })
+  // mock a patient
+  it("return a patient with id and return 200", async ()=> {
+    const mockPatient = {
+      name:{
+        id: 2,
+        name:{first:"Sam", last:"Landy"},
+        age:33,
+        gender:"Male",
+        room:"202A",
+        condition: "Normal",
+        tests:[],
+        weight:"130lb",
+        height:"5.3ft",
+        date:new Date("2020-2-20")
+      }
+    }
+    // simulate the 200
+    Patient.find.mockResolvedValue(mockPatient)
+    const req = {}
+    const res = {
+      json: jest.fn(),
+      // simulate the 200
+      status: jest.fn().mockReturnThis()
+    };
+    // get the /GET/:id
+    const routeHandler = router.stack.find(
+      (layer) => layer.route && layer.route.path === '/2' && layer.route.methods.get
+    ).route.stack[0].handle
+    await routeHandler(req,res)
+    expect(res.status).not.toHaveBeenCalled() 
+    // make sure that the patient list is returned
+    expect(res.json).toHaveBeenCalledWith(mockedPatients);
+    // make sure that the find method has been called
+    expect(Patient.find).toHaveBeenCalledTimes(1)
+  })
+
+})
