@@ -457,8 +457,16 @@ router.get('/:id/tests/:testid', getTest, (req, res)=>{
  *         description: nurse name.
  *       - in: path
  *         name: reading
- *         required: true
- *         description: ID of the patient to update.
+ *         type: object
+ *         properties:
+ *           respiratory:
+ *             type: number
+ *             format: float
+ *             description: Respiratory rate
+ *           heartbeat_rate:
+ *             type: number
+ *             format: float
+ *             description: heartbeat rate         
  *       - in: path
  *         name: test id
  *         required: true
