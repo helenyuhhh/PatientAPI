@@ -183,6 +183,9 @@ router.patch('/:id', getPatient, async(req, res)=>{
    if (req.body.weight != null) {
       res.patient.weight = req.body.weight
    }
+   if (req.body.height != null) {
+      res.patient.height = req.body.height
+   }
    if (req.body.age != null) {
       res.patient.age = req.body.age
    }
