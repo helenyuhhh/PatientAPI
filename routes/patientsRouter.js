@@ -72,15 +72,76 @@ router.get('/:id', getPatient, (req, res)=>{
  * /api/patients:
  *   post:
  *     summary: Add a new patient
+ *     parameters:
+ *       - in: path
+ *         name: new name
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: name of the new patient.
+ *       - in: path
+ *         name: age
+ *         schema:
+ *           type: integer
+ *         required: true
+ *         description: age of the patient .
+ *       - in: path
+ *         name: gender
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: gender of the patient.
+ *       - in: path
+ *         name: room
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: room of the patient.
+ *       - in: path
+ *         name: weight
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: weight of the patient.
+ *       - in: path
+ *         name: height
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: height of the patient .
+ *       - in: path
+ *         name: date
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: date .
  *     requestBody:
  *       required: true
  *       content:
  *         application/json:
  *           schema:
  *             type: object
+ *             required:
+ *               - name
+ *               - age
+ *               - gender
+ *               - room
+ *               - weight
+ *               - height
+ *               - date
  *             properties:
  *               name:
- *                 type: string
+ *                 type: object
+ *                 required:
+ *                   - first
+ *                   - last
+ *                 properties:
+ *                   first:
+ *                     type: string
+ *                     description: The first name of the patient
+ *                   last:
+ *                     type: string
+ *                     description
  *               age:
  *                 type: integer
  *               gender:
@@ -101,10 +162,12 @@ router.get('/:id', getPatient, (req, res)=>{
  *               tests:
  *                 type: array
  *                 items:
- *                   type: object
+ *                  type: object
+ * 
+ * 
  *     responses:
  *       201:
- *         description: Patient added.
+ *         description: Patient successfully created.
  *       400:
  *         description: Bad request.
  */
@@ -131,45 +194,7 @@ router.post('/', async(req, res)=>{
   
 })
 // only update the data that we sent 
-/**
- * @swagger
- * /api/patients/{id}:
- *   patch:
- *     summary: Update a patient's data with given info
- *     parameters:
- *       - in: path
- *         name: id
- *         required: true
- *         description: ID of the patient to update.
- *         schema:
- *           type: string
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             type: object
- *             properties:
- *               room:
- *                 type: string
- *               weight:
- *                 type: string
- *               height:
- *                 type: string
- *               gender:
- *                 type: string
- *               date:
- *                 type: string
- *               tests:
- *                 type: array
- *     responses:
- *       200:
- *         description: Patient Data updated.
- *       400:
- *         description: Bad request.
- *       404:
- *         description: Patient not found.
- */
+
 router.patch('/:id', getPatient, async(req, res)=>{
    if (req.body.condition != null) {
       res.patient.condition = req.body.condition
@@ -313,11 +338,17 @@ router.get('/:id/tests', async(req, res)=>{
  *     summary: Get a test by ID
  *     parameters:
  *       - in: path
- *         name: id
+ *         name: patient id
  *         required: true
- *         description: ID of the test to retrieve.
  *         schema:
  *           type: string
+ *         description: The ID of the patient.
+ *       - in: path
+ *         name: testid
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: The ID of the test.
  *     responses:
  *       200:
  *         description: Test.
@@ -365,59 +396,7 @@ router.get('/:id/tests/:testid', getTest, (req, res)=>{
    res.send(res.test)
 })
 // post test by its id
-/**
- * @swagger
- * /api/patients/{id}/tests:
- *   post:
- *     summary: Add a new test
- *     description: Create a new test and add it to test array
- *     parameters:
- *       - in: path
- *         name: id
- *         required: true
- *         schema:
- *           type: string
- *         description: ID of the patient.
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             type: object
- *             properties:
- *               date:
- *                 type: string
- *                 format: date
- *               nurse_name:
- *                 type: string
- *               type:
- *                 type: string
- *               category:
- *                 type: string
- *               reading:
- *                 type: object
- *                 properties:
- *                   blood_pressure:
- *                     type: object
- *                     properties:
- *                       systolic:
- *                         type: integer
- *                       diastolic:
- *                         type: integer
- *                   respiratory_rate:
- *                     type: integer
- *                   blood_oxygen_level:
- *                     type: integer
- *                   heartbeat_rate:
- *                     type: integer
- *     responses:
- *       201:
- *         description: Test created
- *       400:
- *         description: Test already exists or validation error
- *       500:
- *         description: Server error
- */
+
 router.post('/:id/tests', getPatient,async(req, res)=>{
    // const {name, age, gender, room, clinical, weight, height, date} = req.body
    // check if ther's any existed tests, check the date, cat and nurse
@@ -425,11 +404,12 @@ router.post('/:id/tests', getPatient,async(req, res)=>{
       test.date === req.body.date &&
       test.category === req.body.category &&
       test.nurse_name === req.body.nurse_name
-   )
+   ) 
    if (foundText) {
       res.status(400).json({ message: "Test exists!"})
    
    }
+
    const test = new Test({
       patient_id: req.params.id,
       date: req.body.date,
@@ -451,99 +431,7 @@ router.post('/:id/tests', getPatient,async(req, res)=>{
 
 
 // patch test information by id
-/**
- * @swagger
- * /api/patients/{id}/tests/{testid}:
- *   patch:
- *     summary: Update a specific test by test ID
- *     description: Update the tests with data provided
- *     parameters:
- *       - in: path
- *         name: id
- *         required: true
- *         schema:
- *           type: string
- *         description: The ID of the patient.
- *       - in: path
- *         name: testid
- *         required: true
- *         schema:
- *           type: string
- *         description: The ID of the test.
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             type: object
- *             properties:
- *               reading:
- *                 type: object
- *                 properties:
- *                   blood_pressure:
- *                     type: object
- *                     properties:
- *                       systolic:
- *                         type: integer
- *                       diastolic:
- *                         type: integer
- *                   respiratory_rate:
- *                     type: integer
- *                   blood_oxygen_level:
- *                     type: integer
- *                   heartbeat_rate:
- *                     type: integer
- *               date:
- *                 type: string
- *                 format: date
- *               nurse_name:
- *                 type: string
- *               type:
- *                 type: string
- *               category:
- *                 type: string
- *     responses:
- *       200:
- *         description: Test updated
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 patient_id:
- *                   type: string
- *                 date:
- *                   type: string
- *                   format: date
- *                 nurse_name:
- *                   type: string
- *                 type:
- *                   type: string
- *                 category:
- *                   type: string
- *                 reading:
- *                   type: object
- *                   properties:
- *                     blood_pressure:
- *                       type: object
- *                       properties:
- *                         systolic:
- *                           type: integer
- *                         diastolic:
- *                           type: integer
- *                     respiratory_rate:
- *                       type: integer
- *                     blood_oxygen_level:
- *                       type: integer
- *                     heartbeat_rate:
- *                       type: integer
- *       400:
- *         description: Validation or request error
- *       404:
- *         description: Test not found
- *       500:
- *         description: Server error
- */
+
 router.patch('/:id/tests/:testid', getTest, async(req, res)=>{
    // update the reading
    if (req.body.reading != null) {
@@ -578,43 +466,7 @@ router.patch('/:id/tests/:testid', getTest, async(req, res)=>{
    }
 })
 // add delete function, removes the test from tests array
-/**
- * @swagger
- * /api/patients/{id}/tests/{testid}:
- *   delete:
- *     summary: Delete a specific test by test ID
- *     description: Remove a test by its id from the tests list
- *     parameters:
- *       - in: path
- *         name: id
- *         required: true
- *         schema:
- *           type: string
- *         description: The ID of the patient.
- *       - in: path
- *         name: testid
- *         required: true
- *         schema:
- *           type: string
- *         description: The ID of the test.
- *     responses:
- *       200:
- *         description: Test deleted successfully
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 message:
- *                   type: string
- *                   example: "Test deleted successfully"
- *       400:
- *         description: Deletion or request error
- *       404:
- *         description: Test not found
- *       500:
- *         description: Server error
- */
+
 router.delete('/:id/tests/:testid', getPatient, async (req, res) => {
    // convert the id to objectID
    const testID = new mongoose.Types.ObjectId(req.params.testid)
